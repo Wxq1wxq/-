@@ -1,0 +1,28 @@
+控件：颜色选择器
+使用方法：
+xml：<com.carocean.ckxcarsettings.colorselect.ColorPickerView
+            android:id="@+id/colorpickerview"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="100dp" />
+代码：
+binding.colorpickerview.subscribe((color, fromUser, shouldPropagate) -> {
+	//手指在移动的时候不断触发
+            int red = (color & 0xff0000) >> 16;
+            int green = (color & 0x00ff00) >> 8;
+            int blue = (color & 0x0000ff);
+            int index=ColorUtil.findClosestPaletteColorTo(new int[]{red,green,blue});
+//            binding.colorTest.setBackgroundColor(Color.rgb(colorsRgb[index][0],colorsRgb[index][1],colorsRgb[index][2]));
+            Log.d(TAG, "onColor:red: "+red+" \tgreen "+green+"\tblue"+blue+"\tindex:"+index);
+        });
+
+        binding.colorpickerview.setInitialColor(INITIAL_COLOR);
+        binding.colorpickerview.getColorWheelView().setAction_up_color(new ColorWheelView.Action_UP_Color() {
+            @Override
+            public void onColorUPListener(int red, int green, int blue) {
+	//当手指抬起来的时候触发
+                int index=ColorUtil.findClosestPaletteColorTo(new int[]{red,green,blue});
+                mcuDataService.setAtmosphereColorOrLamp(index_IHU_SetTheaterDimmingColor_64,index);
+            }
+        });

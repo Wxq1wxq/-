@@ -1,0 +1,50 @@
+控件：VerticalSeekbar
+使用方法：
+<com.ckx.systemui.statusbar.VerticalSeekbar
+                android:id="@+id/seekbar_tmp"
+                style="@style/VolumeVerticalSeekBar"
+                android:max="16"
+                android:layout_marginLeft="171dp"
+                android:layout_marginTop="100dp" />
+
+<style name="VolumeVerticalSeekBar">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">365dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:progressDrawable">@drawable/air_seekbar_tmp</item>
+        <item name="android:thumb">@drawable/air_thumb</item>
+        <item name="android:thumbOffset">15dp</item>
+        <item name="android:splitTrack">false</item>
+注：进度值只能从0开始，如果实际需求不从0，需要代码换算下；代码setprogress时，不要设置animator为true，不然可能出现thumb不移动现象
+
+ private void trackTouchEvent(MotionEvent event) {
+        final int height = getHeight();
+        final int top = getPaddingTop();
+        final int bottom = getPaddingBottom();
+        final int available = height - top - bottom;
+        int y;
+        if (event.getY() > 185) {//这里根据实际情况修改，当进度达到某个值时，点击位置和thumb位置不一致
+            y = (int) event.getY();
+        } else {
+            y = (int) event.getY() - 25;//这里根据实际情况修改，当进度达到某个值时，点击位置和thumb位置不一致
+        }
+        float scale = 0;
+        float progress = 0;
+        // 下面是最小值
+        if (y > height - bottom) {
+            scale = 0.0f;
+        } else if (y < top) {
+            scale = 1.0f;
+        } else {
+            scale = (float) (available - y + top) / (float) available;
+            progress = mTouchProgressOffset;
+        }
+
+        final int max = getMax();
+        progress += scale * max;
+        Log.d("VerticalSeekBar____","max="+max+" scale="+scale+" progress="+progress+" height="+height+" top="+top+" bottom="+bottom+" available="+available+" y="+y+" yy="+event.getY());
+        setProgress((int) progress);
+    }
+
+

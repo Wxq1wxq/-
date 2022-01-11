@@ -1,0 +1,26 @@
+控件：NumberPickerView
+类似于时间选择，使用方法如下：源路径：https://github.com/Carbs0126/NumberPickerView
+在res/values里添加文件：attrs_number_picker_view
+code：
+ String[] arrayValue = new String[21];
+            for (int i = 0; i <= 20; i++) {
+                arrayValue[i] = String.valueOf(30 + i * 5);
+            }
+            speedpicker.setDisplayedValuesAndPickedIndex(arrayValue, 10, true);//arrayValue:这个选择器的数据
+            speedpicker.setMinValue(0);//最小值的下标
+            speedpicker.setMaxValue(20);//最大值的下标
+xml：
+	<style name="SetTimeNumberPickerView" parent="min">
+        <item name="android:layout_width">100dp</item>
+        <item name="npv_TextColorNormal">@color/defaultGray</item>//未选中文字颜色
+        <item name="npv_TextColorSelected">@color/white</item>//选中文字颜色
+        <item name="npv_ShowCount">3</item>
+        <item name="npv_ShowDivider">false</item>
+        <item name="npv_TextSizeNormal">36sp</item>
+        <item name="npv_TextSizeSelected">36sp</item>
+        <item name="npv_WrapSelectorWheel">true</item>
+        <item name="npv_ItemPaddingVertical">20dp</item>
+    </style>
+注：后续修改选中和未选中文字颜色时，直接设置颜色无效，可以在log中打印TextColorNormal，TextColorSelected的值，在使用set方法设置进去
+
+
